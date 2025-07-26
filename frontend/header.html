@@ -1,0 +1,251 @@
+<!-- Dynamic Header for Bit & Board -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="fas fa-microchip"></i> Bit & Board
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+      </ul>
+      
+      <!-- User Menu - Changes based on login status -->
+      <ul class="navbar-nav ml-auto" id="userMenu">
+        <!-- Guest Menu (shown when not logged in) -->
+        <li class="nav-item guest-menu">
+          <a class="nav-link btn btn-outline-primary mr-2" href="login.html">
+            <i class="fas fa-sign-in-alt mr-1"></i>Login
+          </a>
+        </li>
+        <li class="nav-item guest-menu">
+          <a class="nav-link btn btn-primary" href="register.html">
+            <i class="fas fa-user-plus mr-1"></i>Register
+          </a>
+        </li>
+        
+        <!-- User Menu (shown when logged in) -->
+        <li class="nav-item user-menu" style="display: none;">
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+              <i class="fas fa-user-circle mr-1"></i>
+              <span id="userDisplayName">User</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="profile.html">
+                <i class="fas fa-user mr-2"></i>My Profile
+              </a>
+              <a class="dropdown-item" href="orders.html">
+                <i class="fas fa-shopping-bag mr-2"></i>My Orders
+              </a>
+              <a class="dropdown-item" href="cart.html">
+                <i class="fas fa-shopping-cart mr-2"></i>Shopping Cart
+                <span class="badge badge-primary ml-2" id="cartCount">0</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Add some spacing for fixed navbar -->
+<div style="height: 80px;"></div>
+
+<style>
+  .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #007bff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff !important;
+  }
+  
+  .navbar-brand:hover {
+    color: #0056b3 !important;
+  }
+  
+  .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #007bff !important;
+  }
+  
+  .dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .dropdown-item {
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+  }
+  
+  /* Animation for menu transitions */
+  .guest-menu, .user-menu {
+    transition: all 0.3s ease;
+  }
+</style>
+
+<script>
+// Header functionality
+$(document).ready(function() {
+    // Check login status and update header
+    function updateHeader() {
+        const token = sessionStorage.getItem('jwtToken');
+        const userData = sessionStorage.getItem('userData');
+        
+        if (token && userData) {
+            // User is logged in
+            $('.guest-menu').hide();
+            $('.user-menu').show();
+            
+            // Update user display name
+            try {
+                const user = JSON.parse(userData);
+                const displayName = user.first_name || user.username || 'User';
+                $('#userDisplayName').text(displayName);
+            } catch (e) {
+                $('#userDisplayName').text('User');
+            }
+            
+            // Load cart count if user is logged in
+            loadCartCount();
+        } else {
+            // User is not logged in
+            $('.guest-menu').show();
+            $('.user-menu').hide();
+        }
+    }
+    
+    // Load cart count from API
+    function loadCartCount() {
+        const token = sessionStorage.getItem('jwtToken');
+        if (!token) return;
+        
+        $.ajax({
+            method: "GET",
+            url: `${config.API_URL}/api/v1/cart/count`,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            success: function(data) {
+                $('#cartCount').text(data.count || 0);
+            },
+            error: function(error) {
+                console.log('Error loading cart count:', error);
+                $('#cartCount').text('0');
+            }
+        });
+    }
+    
+    // Logout functionality
+    $('#logoutBtn').on('click', function(e) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Logout',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, logout',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Call logout API
+                const token = sessionStorage.getItem('jwtToken');
+                if (token) {
+                    $.ajax({
+                        method: "POST",
+                        url: `${config.API_URL}/api/v1/logout`,
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        success: function(data) {
+                            console.log('Logout successful');
+                        },
+                        error: function(error) {
+                            console.log('Logout error:', error);
+                        },
+                        complete: function() {
+                            // Clear session storage regardless of API response
+                            sessionStorage.clear();
+                            
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Logged out successfully',
+                                text: 'You have been logged out.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // Redirect to home page
+                                window.location.href = 'index.html';
+                            });
+                        }
+                    });
+                } else {
+                    // No token, just clear storage
+                    sessionStorage.clear();
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    });
+    
+    // Update header on page load
+    updateHeader();
+    
+    // Listen for storage changes (in case login status changes in another tab)
+    $(window).on('storage', function() {
+        updateHeader();
+    });
+    
+    // Update header when user data changes
+    $(window).on('userLoginStatusChanged', function() {
+        updateHeader();
+    });
+});
+</script> 

@@ -74,7 +74,7 @@
         border-radius: 15px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         padding: 2rem;
-        max-width: 500px;
+        max-width: 600px;
         margin: 2rem auto;
       }
       .form-control {
@@ -164,58 +164,148 @@
           <h6 class="text-primary mb-2"><i class="fas fa-star mr-2"></i>Why Join Bit & Board?</h6>
           <ul>
             <li>Access to premium microcontrollers and components</li>
+            <li>Exclusive deals and discounts</li>
+            <li>Fast shipping and excellent customer support</li>
             <li>Track your orders and manage your account</li>
           </ul>
         </div>
         
         <form id="registerForm">
-          <div class="form-group">
-            <label for="name" class="font-weight-bold">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              class="form-control"
-              placeholder="Enter your full name"
-              required
-            />
+          <!-- Personal Information -->
+          <h5 class="text-primary mb-3"><i class="fas fa-user mr-2"></i>Personal Information</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="first_name" class="font-weight-bold">First Name</label>
+                <input
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  class="form-control"
+                  placeholder="Enter your first name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="last_name" class="font-weight-bold">Last Name</label>
+                <input
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  class="form-control"
+                  placeholder="Enter your last name"
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email" class="font-weight-bold">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="Enter your email"
-              required
-            />
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="email" class="font-weight-bold">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="phone_number" class="font-weight-bold">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone_number"
+                  name="phone_number"
+                  class="form-control"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="password" class="font-weight-bold">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Create a strong password"
-              required
-            />
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="age" class="font-weight-bold">Age</label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  class="form-control"
+                  placeholder="Age"
+                  min="1"
+                  max="120"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="sex" class="font-weight-bold">Gender</label>
+                <select id="sex" name="sex" class="form-control" required>
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="username" class="font-weight-bold">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  class="form-control"
+                  placeholder="Choose a username"
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="confirmPassword" class="font-weight-bold">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              class="form-control"
-              placeholder="Confirm your password"
-              required
-            />
+          
+          <!-- Account Security -->
+          <h5 class="text-primary mb-3 mt-4"><i class="fas fa-lock mr-2"></i>Account Security</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="password" class="font-weight-bold">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Create a strong password"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="confirmPassword" class="font-weight-bold">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="form-control"
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+            </div>
           </div>
+          
           <button
             type="submit"
-            class="btn btn-success btn-register btn-block"
+            class="btn btn-success btn-register btn-block mt-4"
             id="register"
           >
             <i class="fas fa-user-plus mr-2"></i>Create Account
