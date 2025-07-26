@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const url = 'http://172.34.98.64:4000/'
+    const url = config.API_URL + '/'
 
     const getToken = () => {
         const userId = sessionStorage.getItem('userId');
