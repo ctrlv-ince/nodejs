@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Import database connection and models
 const db = require('../config/database');
-const { validateRegistration, validateLogin } = require('../middleware/validation');
+const { validateRegistration, validateLogin } = require('./validation');
 
 // Register new user
 router.post('/register', validateRegistration, async (req, res) => {
